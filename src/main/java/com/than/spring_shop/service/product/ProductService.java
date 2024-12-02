@@ -2,7 +2,7 @@ package com.than.spring_shop.service.product;
 
 import com.than.spring_shop.entity.Category;
 import com.than.spring_shop.entity.Product;
-import com.than.spring_shop.exception.NotFoundException;
+import com.than.spring_shop.exception.ResourceNotFoundException;
 import com.than.spring_shop.repository.CategoryRepository;
 import com.than.spring_shop.repository.ProductRepository;
 import com.than.spring_shop.request.product.AddProductRequest;
@@ -73,7 +73,7 @@ public class ProductService implements IProductService {
   public Product getProductById(Long id) {
     return productRepository
         .findById(id)
-        .orElseThrow(() -> new NotFoundException("product not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("product not found"));
   }
 
   @Override
@@ -81,7 +81,7 @@ public class ProductService implements IProductService {
     Product product =
         productRepository
             .findById(id)
-            .orElseThrow(() -> new NotFoundException("product not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("product not found"));
 
     product.setName(request.getName());
     product.setDescription(request.getDescription());
@@ -92,7 +92,7 @@ public class ProductService implements IProductService {
     Category category =
         categoryRepository
             .findByName(request.getCategory().getName())
-            .orElseThrow(() -> new NotFoundException("category not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("category not found"));
     product.setCategory(category);
 
     return productRepository.save(product);
@@ -103,7 +103,7 @@ public class ProductService implements IProductService {
     Product product =
         productRepository
             .findById(id)
-            .orElseThrow(() -> new NotFoundException("product not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("product not found"));
 
     productRepository.delete(product);
   }
