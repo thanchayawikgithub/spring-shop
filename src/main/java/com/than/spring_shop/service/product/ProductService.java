@@ -1,28 +1,77 @@
 package com.than.spring_shop.service.product;
 
 import com.than.spring_shop.entity.Product;
+import com.than.spring_shop.exception.NotFoundException;
+import com.than.spring_shop.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-public interface ProductService {
-  Product addProduct(Product product);
+@Service
+@RequiredArgsConstructor
+public class ProductService implements IProductService {
+  private final ProductRepository productRepository;
 
-  List<Product> getAllProducts();
+  @Override
+  public Product addProduct(Product product) {
+    return null;
+  }
 
-  List<Product> getProductsByCategory(String category);
+  @Override
+  public List<Product> getAllProducts() {
+    return productRepository.findAll();
+  }
 
-  List<Product> getProductsByBrand(String brand);
+  @Override
+  public List<Product> getProductsByCategory(String category) {
+    return productRepository.findByCategoryName(category);
+  }
 
-  List<Product> getProductsByCategoryAndBrand(String category, String brand);
+  @Override
+  public List<Product> getProductsByBrand(String brand) {
+    return productRepository.findByBrand(brand);
+  }
 
-  List<Product> getProductsByName(String name);
+  @Override
+  public List<Product> getProductsByCategoryAndBrand(String category, String brand) {
+    return productRepository.findByCategoryNameAndBrand(category,brand);
+  }
 
-  List<Product> getProductsByBrandAndName(String brand, String name);
+  @Override
+  public List<Product> getProductsByName(String name) {
+    return productRepository.findByName(name);
+  }
 
-  Product getProductById(Long id);
+  @Override
+  public List<Product> getProductsByBrandAndName(String brand, String name) {
+    return productRepository.findByBrandAndName(brand,name);
+  }
 
-  Product updateProduct(Long id, Product product);
+  @Override
+  public Product getProductById(Long id) {
+    return productRepository
+        .findById(id)
+        .orElseThrow(() -> new NotFoundException("product not found"));
+  }
 
-  void deleteProduct(Long id);
+  @Override
+  public Product updateProduct(Long id, Product product) {
+    return null;
+  }
 
-  Long countProductsByBrandAndName(String brand, String name);
+  @Override
+  public void deleteProduct(Long id) {
+    Product product =
+        productRepository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException("product not found"));
+
+    productRepository.delete(product);
+  }
+
+  @Override
+  public Long countProductsByBrandAndName(String brand, String name) {
+    return productRepository.countByBrandAndName(brand,name);
+  }
 }
