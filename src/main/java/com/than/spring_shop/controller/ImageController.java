@@ -2,7 +2,6 @@ package com.than.spring_shop.controller;
 
 import com.than.spring_shop.dto.ImageDto;
 import com.than.spring_shop.entity.Image;
-import com.than.spring_shop.exception.ResourceNotFoundException;
 import com.than.spring_shop.response.ApiResponse;
 import com.than.spring_shop.service.image.IImageService;
 import java.sql.SQLException;
@@ -26,14 +25,9 @@ public class ImageController {
   @PostMapping("/upload")
   public ResponseEntity<ApiResponse> saveImages(
       @RequestParam List<MultipartFile> files, @RequestParam Long productId) {
-    try {
-      List<ImageDto> imageDtos = imageService.saveImages(files, productId);
-      return ResponseEntity.status(HttpStatus.CREATED)
-          .body(new ApiResponse("Upload success", imageDtos));
-    } catch (Exception e) {
-      return ResponseEntity.internalServerError()
-          .body(new ApiResponse("Upload failed", e.getMessage()));
-    }
+    List<ImageDto> imageDtos = imageService.saveImages(files, productId);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(new ApiResponse("Upload success", imageDtos));
   }
 
   @GetMapping("/image/download/{id}")
@@ -51,27 +45,13 @@ public class ImageController {
   @PutMapping("/image/{id}/update")
   public ResponseEntity<ApiResponse> updateImage(
       @PathVariable Long id, @RequestBody MultipartFile file) {
-    try {
-      imageService.updateImage(id, file);
-      return ResponseEntity.ok(new ApiResponse("Update success", null));
-    } catch (ResourceNotFoundException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-          .body(new ApiResponse(e.getMessage(), null));
-    } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(new ApiResponse("Update failed", null));
-    }
+    imageService.updateImage(id, file);
+    return ResponseEntity.ok(new ApiResponse("Update success", null));
   }
 
   @DeleteMapping("/image/{id}/delete")
   public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long id) {
-    try {
-      imageService.deleteImage(id);
-      return ResponseEntity.ok(new ApiResponse("Update success", null));
-    } catch (ResourceNotFoundException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-          .body(new ApiResponse(e.getMessage(), null));
-    } catch (Exception e) {
-      return ResponseEntity.internalServerError().body(new ApiResponse("Update failed", null));
-    }
+    imageService.deleteImage(id);
+    return ResponseEntity.ok(new ApiResponse("Update success", null));
   }
 }
