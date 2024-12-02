@@ -78,10 +78,7 @@ public class ProductService implements IProductService {
 
   @Override
   public Product updateProduct(Long id, UpdateProductRequest request) {
-    Product product =
-        productRepository
-            .findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("product not found"));
+    Product product = getProductById(id);
 
     product.setName(request.getName());
     product.setDescription(request.getDescription());
@@ -100,10 +97,7 @@ public class ProductService implements IProductService {
 
   @Override
   public void deleteProduct(Long id) {
-    Product product =
-        productRepository
-            .findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("product not found"));
+    Product product = getProductById(id);
 
     productRepository.delete(product);
   }
