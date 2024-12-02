@@ -1,10 +1,12 @@
 package com.than.spring_shop.service.product;
 
 import com.than.spring_shop.entity.Product;
+import com.than.spring_shop.request.product.AddProductRequest;
+import com.than.spring_shop.request.product.UpdateProductRequest;
 import java.util.List;
 
 public interface IProductService {
-  Product addProduct(Product product);
+  Product addProduct(AddProductRequest request);
 
   List<Product> getAllProducts();
 
@@ -20,7 +22,7 @@ public interface IProductService {
 
   Product getProductById(Long id);
 
-  Product updateProduct(Long id, Product product);
+  Product updateProduct(Long id, UpdateProductRequest request);
 
   void deleteProduct(Long id);
 
